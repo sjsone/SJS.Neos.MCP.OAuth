@@ -1,0 +1,22 @@
+{
+    "name": "sjs/neos-mcp-oauth",
+    "type": "neos-package",
+    "description": "OAuth2 authentication for Neos MCP server - enables self-service OAuth client creation and authorization",
+    "license": "AGPL-3.0-or-later",
+    "require": {
+        "neos/neos": "^9.0",
+        "league/oauth2-server": "^8.5",
+        "sjs/flow-mcp": "*",
+        "sjs/neos-mcp": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "SJS\\Neos\\MCP\\OAuth\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SJS\\Neos\\MCP\\OAuth\\Tests\\": "Tests"
+        }
+    }
+}

@@ -1,0 +1,2 @@
+SJS\Flow\MCP\Domain\Connection\ConnectionProviderInterface:
+  className: 'SJS\Neos\MCP\OAuth\Domain\Provider\ChainedConnectionProvider'

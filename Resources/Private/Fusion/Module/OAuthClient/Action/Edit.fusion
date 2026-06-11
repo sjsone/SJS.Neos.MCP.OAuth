@@ -1,0 +1,17 @@
+prototype(SJS.Neos.MCP.OAuth:Module.OAuthClient.Action.Edit) < prototype(Neos.Fusion:Component) {
+    client = ${client}
+    availableScopes = ${availableScopes}
+    checkedGrants = ${checkedGrants}
+    checkedScopes = ${checkedScopes}
+
+    renderer = afx`
+        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.Edit
+            client={props.client}
+            availableScopes={props.availableScopes}
+            checkedGrants={props.checkedGrants}
+            checkedScopes={props.checkedScopes}
+            cancelAction="party"
+            cancelArguments={{party: props.client.party}}
+        />
+    `
+}

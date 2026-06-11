@@ -1,0 +1,11 @@
+# Configuration for SJS.Neos.MCP.OAuth
+#
+# OAuth server settings have been moved to Settings.SJS.Flow.MCP.yaml
+# under SJS.Flow.MCP.server.mcp.oauth so they are scoped to the
+# specific MCP server instance.
+#
+# Add any non-MCP-server-scoped package settings here.
+SJS:
+  Neos:
+    MCP:
+      OAuth: []

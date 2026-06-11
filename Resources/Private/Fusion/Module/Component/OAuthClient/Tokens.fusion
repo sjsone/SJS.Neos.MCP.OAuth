@@ -1,0 +1,56 @@
+prototype(SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.Tokens) < prototype(Neos.Fusion:Component) {
+    client = null
+    tokens = null
+    cancelAction = 'index'
+    cancelArguments = Neos.Fusion:DataStructure
+
+    @private {
+        revokeAllModalId = ${'revoke-all-tokens-page-' + props.client.clientId}
+        hasTokens = ${Array.length(props.tokens) > 0}
+    }
+
+    renderer = afx`
+        <div>
+            <h2>Tokens for "{props.client.name}"</h2>
+
+            <table @if.hasTokens={private.hasTokens} class="neos-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Token</th>
+                        <th>User</th>
+                        <th>Scopes</th>
+                        <th>Expires</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <Neos.Fusion:Loop items={props.tokens} itemName="token">
+                        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.TokenRow token={token} />
+                    </Neos.Fusion:Loop>
+                </tbody>
+            </table>
+            <p @if.noTokens={!private.hasTokens}><em>No tokens have been issued for this client yet.</em></p>
+        </div>
+
+        <div class="neos-footer">
+            <a class="neos-button">
+                <Neos.Fusion:ActionUri @path="attributes.href" action={props.cancelAction} arguments={props.cancelArguments} />
+                Back
+            </a>
+
+            <button @if.hasTokens={private.hasTokens} type="button" class="neos-button neos-button-warning neos-pull-right" data-toggle="modal" href={'#' + private.revokeAllModalId}>Revoke All Tokens</button>
+        </div>
+
+        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ConfirmModal
+            @if.hasTokens={private.hasTokens}
+            modalId={private.revokeAllModalId}
+            header={'Revoke ALL tokens for "' + props.client.name + '"? Active connections will break.'}
+            confirmLabel="Revoke All"
+            confirmButtonClass="neos-button neos-button-warning"
+            action="revokeAllTokens"
+            arguments={{client: props.client}}
+        />
+    `
+}

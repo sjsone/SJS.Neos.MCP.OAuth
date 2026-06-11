@@ -1,0 +1,55 @@
+prototype(SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.TokenRow) < prototype(Neos.Fusion:Component) {
+    token = null
+
+    @private {
+        isRevoked = ${props.token.revoked}
+        isExpired = ${props.token.expired}
+        isActive = ${!private.isRevoked && !private.isExpired}
+        tokenPreview = ${String.substr(props.token.identifier, 0, 12) + '...'}
+        statusLabel = ${private.isRevoked ? 'Revoked' : (private.isExpired ? 'Expired' : 'Active')}
+        revokeTokenModalId = ${'revoke-token-' + props.token.Persistence_Object_Identifier}
+    }
+
+    renderer = afx`
+        <tr>
+            <td>
+                <code title={props.token.identifier}>{private.tokenPreview}</code>
+            </td>
+            <td>
+                <code @if.hasUser={!!props.token.userIdentifier}>{props.token.userIdentifier}</code>
+                <em @if.noUser={!props.token.userIdentifier}>none (client_credentials)</em>
+            </td>
+            <td>
+                <Neos.Fusion:Loop items={props.token.scopes} itemName="scope" glue=", ">
+                    <span class="neos-label">{scope}</span>
+                </Neos.Fusion:Loop>
+            </td>
+            <td>
+                {Date.format(props.token.expiryDateTime, 'Y-m-d H:i')}
+            </td>
+            <td>
+                <span @if.isActive={private.isActive} class="neos-label neos-label-success">Active</span>
+                <span @if.notActive={!private.isActive} class="neos-label neos-label-warning">{private.statusLabel}</span>
+            </td>
+            <td>
+                <span @if.hasCreated={!!props.token.createdAt}>{Date.format(props.token.createdAt, 'Y-m-d H:i')}</span>
+                <span @if.noCreated={!props.token.createdAt}>&mdash;</span>
+            </td>
+            <td class="neos-action">
+                <div class="neos-pull-right">
+                    <button @if.isActive={private.isActive} type="button" class="neos-button neos-button-danger" data-toggle="modal" href={'#' + private.revokeTokenModalId}>Revoke</button>
+                </div>
+            </td>
+        </tr>
+
+        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ConfirmModal
+            @if.isActive={private.isActive}
+            modalId={private.revokeTokenModalId}
+            header={'Revoke this token? The connection will stop working.'}
+            confirmLabel="Revoke"
+            confirmButtonClass="neos-button neos-button-danger"
+            action="revokeToken"
+            arguments={{token: props.token}}
+        />
+    `
+}

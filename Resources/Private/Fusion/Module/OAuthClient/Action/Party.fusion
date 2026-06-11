@@ -1,0 +1,41 @@
+prototype(SJS.Neos.MCP.OAuth:Module.OAuthClient.Action.Party) < prototype(Neos.Fusion:Component) {
+
+    party = ${party}
+    clients = ${clients}
+
+    renderer = afx`
+        <div>
+            <h2>OAuth Clients for "{props.party.name}"</h2>
+
+            <table @if.hasClients={Array.length(props.clients) > 0} class="neos-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Client ID</th>
+                        <th>Created</th>
+                        <th>Scopes</th>
+                        <th>Active Tokens</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <Neos.Fusion:Loop items={props.clients} itemName="entry">
+                        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ClientRow entry={entry} />
+                    </Neos.Fusion:Loop>
+                </tbody>
+            </table>
+            <p @if.noClients={Array.length(props.clients) == 0}><em>No clients registered for this user yet.</em></p>
+        </div>
+
+        <div class="neos-footer">
+            <a class="neos-button neos-button-success">
+                <Neos.Fusion:ActionUri @path="attributes.href" action="new" arguments={{party: props.party}} />
+                Create OAuth Client
+            </a>
+            <a class="neos-button">
+                <Neos.Fusion:ActionUri @path="attributes.href" action="index" />
+                Back
+            </a>
+        </div>
+    `
+}

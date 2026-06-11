@@ -1,0 +1,36 @@
+prototype(SJS.Neos.MCP.OAuth:Module.UserOAuthClient.Action.Index) < prototype(Neos.Fusion:Component) {
+
+    clients = ${clients}
+
+    renderer = afx`
+        <div>
+            <table @if.hasClients={Array.length(props.clients) > 0} class="neos-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Client ID</th>
+                        <th>Created</th>
+                        <th>Scopes</th>
+                        <th>Active Tokens</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <Neos.Fusion:Loop items={props.clients} itemName="entry">
+                        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ClientRow entry={entry} />
+                    </Neos.Fusion:Loop>
+                </tbody>
+            </table>
+            <p @if.noClients={Array.length(props.clients) == 0} style="text-align: center; padding: 3em 2em; color: #666;">
+                <em>You don't have any OAuth clients yet. Create one to let external applications access the MCP server on your behalf.</em>
+            </p>
+        </div>
+
+        <div class="neos-footer">
+            <a class="neos-button neos-button-success">
+                <Neos.Fusion:ActionUri @path="attributes.href" action="new" />
+                Create OAuth Client
+            </a>
+        </div>
+    `
+}

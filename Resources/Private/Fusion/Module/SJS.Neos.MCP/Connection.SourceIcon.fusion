@@ -1,0 +1,12 @@
+prototype(SJS.Neos.MCP:Connection.SourceIcon) {
+    oauth {
+        condition = ${String.startsWith(subject, 'oauth')}
+        renderer = Neos.Fusion:Tag {
+            tagName = 'span'
+            content = ''
+            attributes.title = "OAuth"
+            attributes.class = "fa-solid fa-key"
+            attributes.style = "color:#00b5ff;"
+        }
+    }
+}

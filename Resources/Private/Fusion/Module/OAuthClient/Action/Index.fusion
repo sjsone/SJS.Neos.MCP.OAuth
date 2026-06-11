@@ -1,0 +1,28 @@
+prototype(SJS.Neos.MCP.OAuth:Module.OAuthClient.Action.Index) < prototype(Neos.Fusion:Component) {
+
+    parties = ${parties}
+
+    renderer = afx`
+        <div>
+            <h2>OAuth Users</h2>
+
+            <table @if.hasParties={Array.length(props.parties) > 0} class="neos-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Party / User</th>
+                        <th>Clients</th>
+                        <th>Active Tokens</th>
+                        <th>Total Tokens</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <Neos.Fusion:Loop items={props.parties} itemName="entry">
+                        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.PartyRow entry={entry} />
+                    </Neos.Fusion:Loop>
+                </tbody>
+            </table>
+            <p @if.noParties={Array.length(props.parties) == 0}><em>No OAuth clients have been registered yet.</em></p>
+        </div>
+    `
+}

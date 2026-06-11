@@ -1,0 +1,34 @@
+privilegeTargets:
+  'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+    'SJS.Neos.MCP.OAuth:OAuthController.Token':
+      matcher: 'method(SJS\Neos\MCP\OAuth\Controller\OAuthController->tokenAction())'
+    'SJS.Neos.MCP.OAuth:OAuthController.Authorize':
+      matcher: 'method(SJS\Neos\MCP\OAuth\Controller\OAuthController->authorizeAction())'
+    'SJS.Neos.MCP.OAuth:OAuthController.Register':
+      matcher: 'method(SJS\Neos\MCP\OAuth\Controller\OAuthController->registerAction())'
+    'SJS.Neos.MCP.OAuth:OAuthController.WellKnown':
+      matcher: 'method(SJS\Neos\MCP\OAuth\Controller\OAuthController->wellKnownAction())'
+    'SJS.Neos.MCP.OAuth:OAuthClientModule':
+      matcher: 'method(SJS\Neos\MCP\OAuth\Controller\Backend\OAuthClientController->(index|party|new|create|edit|update|delete|regenerateSecret|tokens|revokeToken|revokeAllTokens)Action())'
+
+    'SJS.Neos.MCP.OAuth:UserOAuthClientModule':
+      matcher: 'method(SJS\Neos\MCP\OAuth\Controller\Backend\UserOAuthClientController->(index|new|create|edit|update|delete|regenerateSecret|tokens|revokeToken|revokeAllTokens)Action())'
+
+roles:
+  'Neos.Flow:Everybody':
+    privileges:
+      - privilegeTarget: 'SJS.Neos.MCP.OAuth:OAuthController.Token'
+        permission: GRANT
+      - privilegeTarget: 'SJS.Neos.MCP.OAuth:OAuthController.Authorize'
+        permission: GRANT
+      - privilegeTarget: 'SJS.Neos.MCP.OAuth:OAuthController.Register'
+        permission: GRANT
+      - privilegeTarget: 'SJS.Neos.MCP.OAuth:OAuthController.WellKnown'
+        permission: GRANT
+
+  'Neos.Neos:AbstractEditor':
+    privileges:
+      - privilegeTarget: 'SJS.Neos.MCP.OAuth:OAuthClientModule'
+        permission: GRANT
+      - privilegeTarget: 'SJS.Neos.MCP.OAuth:UserOAuthClientModule'
+        permission: GRANT

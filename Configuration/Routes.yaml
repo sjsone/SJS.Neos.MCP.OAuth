@@ -1,0 +1,52 @@
+##
+# OAuth2 Authorization Server Endpoints
+#
+
+- name: 'OAuth Token'
+  uriPattern: 'oauth/mcp/token'
+  defaults:
+    '@package': 'SJS.Neos.MCP.OAuth'
+    '@controller': 'OAuth'
+    '@action': 'token'
+    '@format': 'json'
+  httpMethods: ['POST']
+
+- name: 'OAuth Authorize'
+  uriPattern: 'oauth/mcp/authorize'
+  defaults:
+    '@package': 'SJS.Neos.MCP.OAuth'
+    '@controller': 'OAuth'
+    '@action': 'authorize'
+  httpMethods: ['GET', 'POST']
+
+##
+# RFC 7591 - OAuth 2.0 Dynamic Client Registration
+#
+# Allows MCP clients to auto-register themselves without manual setup.
+# Only available when enableAutomaticClientRegistration is true.
+##
+
+- name: 'OAuth Register'
+  uriPattern: 'oauth/mcp/register'
+  defaults:
+    '@package': 'SJS.Neos.MCP.OAuth'
+    '@controller': 'OAuth'
+    '@action': 'register'
+    '@format': 'json'
+  httpMethods: ['POST']
+
+##
+# RFC 8414 - OAuth 2.0 Authorization Server Metadata
+#
+# Used by MCP clients to discover OAuth endpoints (authorization, token,
+# registration) and supported scopes.
+##
+
+- name: 'OAuth Well-Known'
+  uriPattern: '.well-known/oauth-authorization-server'
+  defaults:
+    '@package': 'SJS.Neos.MCP.OAuth'
+    '@controller': 'OAuth'
+    '@action': 'wellKnown'
+    '@format': 'json'
+  httpMethods: ['GET']

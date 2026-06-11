@@ -1,0 +1,11 @@
+prototype(SJS.Neos.MCP.OAuth:Module.UserOAuthClient.Action.Tokens) < prototype(Neos.Fusion:Component) {
+    client = ${client}
+    tokens = ${tokens}
+
+    renderer = afx`
+        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.Tokens
+            client={props.client}
+            tokens={props.tokens}
+        />
+    `
+}

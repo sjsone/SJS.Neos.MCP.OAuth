@@ -1,0 +1,62 @@
+prototype(SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.New) < prototype(Neos.Fusion:Component) {
+    availableScopes = null
+    party = null
+
+    renderer = afx`
+        <div>
+            <h2>Create OAuth Client</h2>
+
+            <p @if.hasParty={!!props.party}>For user: <strong>{props.party.name}</strong></p>
+
+            <form id="new-oauth-client-form" method="post">
+                <Neos.Fusion:ActionUri @path="attributes.action" action="create" />
+                <input type="hidden" name="__csrfToken" value={Security.csrfToken()} />
+                <input @if.hasParty={!!props.party} type="hidden" name="moduleArguments[party][__identity]" value={props.party.Persistence_Object_Identifier} />
+
+                <div style="margin-bottom: 1em;">
+                    <label for="name">Name</label><br />
+                    <input type="text" id="name" name="moduleArguments[name]" required="required" style="width: 300px;" />
+                </div>
+
+                <div style="margin-bottom: 1em;">
+                    <label for="redirectUris">Redirect URIs (one per line)</label><br />
+                    <textarea id="redirectUris" name="moduleArguments[redirectUris][]" rows="3" style="width: 400px;"></textarea>
+                </div>
+
+                <div style="margin-bottom: 1em;">
+                    <label>Grant Types</label><br />
+                    <label style="margin-right: 1em;">
+                        <input type="checkbox" name="moduleArguments[grants][]" value="authorization_code" checked="checked" />
+                        Authorization Code
+                    </label>
+                    <label style="margin-right: 1em;">
+                        <input type="checkbox" name="moduleArguments[grants][]" value="refresh_token" checked="checked" />
+                        Refresh Token
+                    </label>
+                    <label>
+                        <input type="checkbox" name="moduleArguments[grants][]" value="client_credentials" />
+                        Client Credentials
+                    </label>
+                </div>
+
+                <div style="margin-bottom: 1em;">
+                    <label>Scopes</label><br />
+                    <Neos.Fusion:Loop items={props.availableScopes} itemName="scope" itemKey="scopeId">
+                        <label style="margin-right: 1em;">
+                            <input type="checkbox" name="moduleArguments[scopes][]" value={scopeId} />
+                            {scopeId} ({scope})
+                        </label>
+                    </Neos.Fusion:Loop>
+                </div>
+            </form>
+        </div>
+
+        <div class="neos-footer">
+            <button type="submit" form="new-oauth-client-form" class="neos-button neos-button-primary">Create</button>
+            <a class="neos-button">
+                <Neos.Fusion:ActionUri @path="attributes.href" action="index" />
+                Cancel
+            </a>
+        </div>
+    `
+}

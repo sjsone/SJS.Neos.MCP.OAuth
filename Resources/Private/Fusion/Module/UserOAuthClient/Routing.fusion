@@ -1,0 +1,7 @@
+
+SJS.Neos.MCP.OAuth.Backend.UserOAuthClientController {
+    index = SJS.Neos.MCP.OAuth:Module.UserOAuthClient.Action.Index
+    new = SJS.Neos.MCP.OAuth:Module.UserOAuthClient.Action.New
+    edit = SJS.Neos.MCP.OAuth:Module.UserOAuthClient.Action.Edit
+    tokens = SJS.Neos.MCP.OAuth:Module.UserOAuthClient.Action.Tokens
+}

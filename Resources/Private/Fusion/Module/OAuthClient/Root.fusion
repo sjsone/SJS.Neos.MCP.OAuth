@@ -1,0 +1,5 @@
+include: resource://Neos.Fusion/Private/Fusion/Root.fusion
+include: resource://Neos.Neos/Private/Fusion/Root.fusion
+
+include: ../Component/**/*.fusion
+include: **/*.fusion

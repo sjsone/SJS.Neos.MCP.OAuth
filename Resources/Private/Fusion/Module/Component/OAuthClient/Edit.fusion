@@ -1,0 +1,69 @@
+prototype(SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.Edit) < prototype(Neos.Fusion:Component) {
+    client = null
+    availableScopes = null
+    checkedGrants = null
+    checkedScopes = null
+    cancelAction = 'index'
+    cancelArguments = Neos.Fusion:DataStructure
+
+    renderer = afx`
+        <div>
+            <h2>Edit OAuth Client</h2>
+            <form id="edit-oauth-client-form" method="post">
+                <Neos.Fusion:ActionUri @path="attributes.action" action="update" arguments={{client: props.client}} />
+                <input type="hidden" name="__csrfToken" value={Security.csrfToken()} />
+
+                <div style="margin-bottom: 1em;">
+                    <label for="name">Name</label><br />
+                    <input type="text" id="name" name="moduleArguments[name]" value={props.client.name} required="required" style="width: 300px;" />
+                </div>
+
+                <div style="margin-bottom: 1em;">
+                    <label>Client ID</label><br />
+                    <code style="font-size: 1.1rem; padding: 4px 8px;">{props.client.clientId}</code>
+                    <button title="Copy the client ID to the clipboard" type="button" class="neos-button neos-button-primary" style="margin-left: 0.5em;" onclick={"navigator.clipboard.writeText('"+props.client.clientId+"')"}>
+                        <i class="fa-solid fa-copy"></i>
+                    </button>
+                </div>
+
+                <div style="margin-bottom: 1em;">
+                    <label for="redirectUris">Redirect URIs (one per line)</label><br />
+                    <textarea id="redirectUris" name="moduleArguments[redirectUris][]" rows="3" style="width: 400px;">{Array.join(props.client.redirectUris, '\n')}</textarea>
+                </div>
+
+                <div style="margin-bottom: 1em;">
+                    <label>Grant Types</label><br />
+                    <label style="margin-right: 1em;">
+                        <input type="checkbox" name="moduleArguments[grants][]" value="authorization_code" @if.hasAuthCode={props.checkedGrants.authorization_code} checked="checked" />
+                        Authorization Code
+                    </label>
+                    <label style="margin-right: 1em;">
+                        <input type="checkbox" name="moduleArguments[grants][]" value="refresh_token" @if.hasRefresh={props.checkedGrants.refresh_token} checked="checked" />
+                        Refresh Token
+                    </label>
+                    <label>
+                        <input type="checkbox" name="moduleArguments[grants][]" value="client_credentials" @if.hasCC={props.checkedGrants.client_credentials} checked="checked" />
+                        Client Credentials
+                    </label>
+                </div>
+
+                <div style="margin-bottom: 1em;">
+                    <label>Scopes</label><br />
+                    <Neos.Fusion:Loop items={props.availableScopes} itemName="scope" itemKey="scopeId">
+                        <label style="margin-right: 1em;">
+                            <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ScopeCheckbox scopeId={scopeId} scopeLabel={scope} checked={props.checkedScopes[scopeId]} />
+                        </label>
+                    </Neos.Fusion:Loop>
+                </div>
+            </form>
+        </div>
+
+        <div class="neos-footer">
+            <button type="submit" form="edit-oauth-client-form" class="neos-button neos-button-primary">Save</button>
+            <a class="neos-button">
+                <Neos.Fusion:ActionUri @path="attributes.href" action={props.cancelAction} arguments={props.cancelArguments} />
+                Cancel
+            </a>
+        </div>
+    `
+}

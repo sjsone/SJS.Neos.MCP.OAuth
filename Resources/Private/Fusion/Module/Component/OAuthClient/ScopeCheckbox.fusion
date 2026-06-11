@@ -1,0 +1,10 @@
+prototype(SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ScopeCheckbox) < prototype(Neos.Fusion:Component) {
+    scopeId = null
+    scopeLabel = null
+    checked = false
+
+    renderer = afx`
+        <input type="checkbox" name="moduleArguments[scopes][]" value={props.scopeId} @if.checked={props.checked} checked="checked" />
+        {props.scopeId} ({props.scopeLabel})
+    `
+}

@@ -1,0 +1,11 @@
+prototype(SJS.Neos.MCP.OAuth:Module.OAuthClient.Action.New) < prototype(Neos.Fusion:Component) {
+    availableScopes = ${availableScopes}
+    party = ${party}
+
+    renderer = afx`
+        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.New
+            availableScopes={props.availableScopes}
+            party={props.party}
+        />
+    `
+}

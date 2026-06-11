@@ -1,0 +1,95 @@
+prototype(SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ClientRow) < prototype(Neos.Fusion:Component) {
+    entry = null
+
+    @private {
+        editUri = Neos.Fusion:ActionUri {
+            action = "edit"
+            arguments = ${{client: entry.client}}
+        }
+        tokensUri = Neos.Fusion:ActionUri {
+            action = "tokens"
+            arguments = ${{client: entry.client}}
+        }
+
+        clientId = ${props.entry.client.clientId}
+        clientIdLength = ${String.length(private.clientId)}
+        clientIdPreview = ${private.clientIdLength > 16 ? String.substr(private.clientId, 0, 6) + "..." + String.substr(private.clientId, -6, 6) : private.clientId}
+
+        regenerateSecretModalId = ${'regenerate-secret-' + private.clientId}
+        revokeAllTokensModalId = ${'revoke-all-tokens-' + private.clientId}
+        deleteModalId = ${'delete-client-' + private.clientId}
+        hasTokens = ${props.entry.totalTokenCount > 0}
+    }
+
+    renderer = afx`
+        <tr>
+            <td>
+                <a style="color:#00b5ff;" href={private.editUri}>
+                    {props.entry.client.name}
+                </a>
+            </td>
+            <td><code>{private.clientIdPreview}</code>
+                <button title="Copy the client ID to the clipboard" type="button" class="neos-button neos-button-primary" style="margin-left: 0.5em;" onclick={"navigator.clipboard.writeText('"+props.entry.client.clientId+"')"}>
+                    <i class="fa-solid fa-copy"></i>
+                </button>
+            </td>
+            <td>{Date.format(props.entry.client.createdAt, 'Y-m-d')}</td>
+            <td>
+                <Neos.Fusion:Loop items={props.entry.client.scopes} itemName="scope" glue=", ">
+                    <span class="neos-label">{scope}</span>
+                </Neos.Fusion:Loop>
+            </td>
+            <td>
+                <a @if.hasTokens={private.hasTokens} href={private.tokensUri} title="Active / Total">
+                    {props.entry.activeTokenCount}&nbsp;/&nbsp;{props.entry.totalTokenCount}
+                </a>
+                <span @if.noTokens={!private.hasTokens} class="neos-label neos-label-info">None</span>
+            </td>
+            <td class="neos-action">
+                <div class="neos-pull-right">
+                    <a @if.hasTokens={private.hasTokens} title="Tokens" class="neos-button neos-button-info" href={private.tokensUri}>
+                        <i class="fas fa-key icon-white"></i>
+                    </a>
+                    <a class="neos-button" title="Edit" href={private.editUri}>
+                        <i class="fas fa-pencil icon-white"></i>
+                    </a>
+                    <button type="button" title="Regen Secret" class="neos-button neos-button-warning" data-toggle="modal" href={'#' + private.regenerateSecretModalId}>
+                        <i class="fa-solid fa-arrows-spin"></i>
+                    </button>
+                    <button @if.hasTokens={private.hasTokens} type="button" title="Revoke all" class="neos-button neos-button-warning" data-toggle="modal" href={'#' + private.revokeAllTokensModalId}>
+                        <i class="fas fa-square-xmark icon-white"></i>
+                    </button>
+                    <button type="button" class="neos-button neos-button-danger" data-toggle="modal" href={'#' + private.deleteModalId}>
+                        <i class="fas fa-trash icon-white"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+
+        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ConfirmModal
+            modalId={private.regenerateSecretModalId}
+            header={'Regenerate the secret for "' + props.entry.client.name + '"? The old secret will stop working.'}
+            confirmLabel="Regenerate"
+            confirmButtonClass="neos-button neos-button-warning"
+            action="regenerateSecret"
+            arguments={{client: props.entry.client}}
+        />
+        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ConfirmModal
+            @if.hasTokens={private.hasTokens}
+            modalId={private.revokeAllTokensModalId}
+            header={'Revoke ALL tokens for "' + props.entry.client.name + '"? Active connections will break.'}
+            confirmLabel="Revoke All"
+            confirmButtonClass="neos-button neos-button-warning"
+            action="revokeAllTokens"
+            arguments={{client: props.entry.client}}
+        />
+        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ConfirmModal
+            modalId={private.deleteModalId}
+            header={'Delete "' + props.entry.client.name + '" and all its tokens? This cannot be undone.'}
+            confirmLabel="Delete"
+            confirmButtonClass="neos-button neos-button-danger"
+            action="delete"
+            arguments={{client: props.entry.client}}
+        />
+    `
+}

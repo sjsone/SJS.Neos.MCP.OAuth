@@ -1,0 +1,40 @@
+prototype(SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.PartyRow) < prototype(Neos.Fusion:Component) {
+    entry = null
+
+    @private {
+        partyUri = Neos.Fusion:ActionUri {
+            action = "party"
+            arguments = ${{party: entry.party}}
+        }
+        hasParty = ${!!entry.party}
+    }
+
+    renderer = afx`
+        <tr>
+            <td>
+                <a @if.hasParty={private.hasParty} style="color:#00b5ff; font-weight: bold;" href={private.partyUri}>
+                    {props.entry.party.name}
+                </a>
+                <span @if.noParty={!private.hasParty} style="font-weight: bold; font-style: italic;">Auto-Registered (no user)</span>
+            </td>
+            <td>
+                <span class="neos-label neos-label-info">{props.entry.clientCount}</span>
+            </td>
+            <td>
+                <span @if.hasActive={props.entry.activeTokenCount > 0} class="neos-label neos-label-success">{props.entry.activeTokenCount} active</span>
+                <span @if.noActive={props.entry.activeTokenCount == 0} class="neos-label">{props.entry.activeTokenCount}</span>
+            </td>
+            <td>
+                <span class="neos-label">{props.entry.totalTokenCount}</span>
+            </td>
+            <td class="neos-action">
+                <div class="neos-pull-right">
+                    <a @if.hasParty={private.hasParty} class="neos-button neos-button-primary" href={private.partyUri}>
+                        <i class="fas fa-pencil icon-white"></i>
+                    </a>
+                    <span @if.noParty={!private.hasParty} class="neos-label neos-label-warning">No party — cannot manage</span>
+                </div>
+            </td>
+        </tr>
+    `
+}

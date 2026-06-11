@@ -1,0 +1,9 @@
+prototype(SJS.Neos.MCP.OAuth:Module.UserOAuthClient.Action.New) < prototype(Neos.Fusion:Component) {
+    availableScopes = ${availableScopes}
+
+    renderer = afx`
+        <SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.New
+            availableScopes={props.availableScopes}
+        />
+    `
+}

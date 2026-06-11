@@ -1,0 +1,37 @@
+SJS:
+  Flow:
+    MCP:
+      server:
+        mcp:
+          oauth:
+            # Encryption key for the authorization server (opaque tokens).
+            # REQUIRED: Must be set to a hex-encoded string of at least 32 bytes
+            # (64 hex characters). Generate one with:
+            #   ./flow oauth:generateEncryptionKey
+            encryptionKey: null
+
+            # Token TTLs
+            accessTokenTTL: "PT1H"
+            refreshTokenTTL: "P30D"
+            authCodeTTL: "PT10M"
+
+            # Enable RFC 7591 Dynamic Client Registration.
+            # When enabled, MCP clients can auto-register themselves without manual setup.
+            enableAutomaticClientRegistration: true
+
+            # Default grant types assigned to auto-registered clients
+            defaultGrants:
+              - "authorization_code"
+              - "refresh_token"
+
+            # Default scopes assigned to auto-registered clients
+            defaultScopes:
+              - "mcp/read"
+              - "mcp/write"
+
+            # Available scopes for authorization
+            scopes:
+              "mcp/read": "MCP Read Access"
+              "mcp/write": "MCP Write Access"
+              "neos/editor": "Neos Editor Access"
+              "neos/admin": "Neos Administrator Access"

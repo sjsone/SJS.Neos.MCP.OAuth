@@ -1,0 +1,20 @@
+Neos:
+  Neos:
+    modules:
+      mcp:
+        submodules:
+          oauthClients:
+            label: "OAuth Clients"
+            description: "Manage your OAuth2 client applications"
+            icon: "fa-key"
+            controller: 'SJS\Neos\MCP\OAuth\Controller\Backend\UserOAuthClientController'
+            privilegeTarget: "SJS.Neos.MCP.OAuth:UserOAuthClientModule"
+
+      administration:
+        submodules:
+          oauthClientModule:
+            label: "MCP OAuth Manager"
+            description: "Manage OAuth2 clients for MCP access"
+            icon: "fa-key"
+            controller: 'SJS\Neos\MCP\OAuth\Controller\Backend\OAuthClientController'
+            privilegeTarget: "SJS.Neos.MCP.OAuth:OAuthClientModule"

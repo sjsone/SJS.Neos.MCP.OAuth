@@ -1,0 +1,33 @@
+prototype(SJS.Neos.MCP.OAuth:Module.Component.OAuthClient.ConfirmModal) < prototype(Neos.Fusion:Component) {
+    modalId = null
+    header = 'Are you sure?'
+    subheader = null
+    confirmLabel = 'Confirm'
+    confirmButtonClass = 'neos-button neos-button-danger'
+    action = null
+    arguments = Neos.Fusion:DataStructure
+
+    renderer = afx`
+        <div class="neos-modal neos-hide" id={props.modalId}>
+            <div class="neos-modal-centered">
+                <div class="neos-modal-content">
+                    <div class="neos-modal-header">
+                        <button type="button" class="neos-close" data-dismiss="modal"></button>
+                        <div class="neos-header">{props.header}</div>
+                        <div @if.hasSubheader={!!props.subheader}>
+                            <div class="neos-subheader">{props.subheader}</div>
+                        </div>
+                    </div>
+                    <div class="neos-modal-footer">
+                        <a href="#" class="neos-button" data-dismiss="modal">Cancel</a>
+                        <button form="postHelper" type="submit" class={props.confirmButtonClass} title={props.confirmLabel}>
+                            <Neos.Fusion:ActionUri @path="formaction" action={props.action} arguments={props.arguments} />
+                            {props.confirmLabel}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="neos-modal-backdrop"></div>
+        </div>
+    `
+}

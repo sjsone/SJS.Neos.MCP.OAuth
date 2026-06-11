@@ -1,0 +1,8 @@
+SJS:
+  Neos:
+    MCP:
+      modules:
+        view:
+          fusion:
+            pathPatterns:
+              oauthSourceIcon: "resource://SJS.Neos.MCP.OAuth/Private/Fusion/Module/SJS.Neos.MCP/Connection.SourceIcon.fusion"
