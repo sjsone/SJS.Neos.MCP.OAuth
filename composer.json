@@ -6,8 +6,8 @@
     "require": {
         "neos/neos": "^9.0",
         "league/oauth2-server": "^8.5",
-        "sjs/flow-mcp": "*",
-        "sjs/neos-mcp": "*"
+        "sjs/flow-mcp": "^1.0",
+        "sjs/neos-mcp": "^1.0"
     },
     "autoload": {
         "psr-4": {
